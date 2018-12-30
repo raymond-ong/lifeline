@@ -1,0 +1,197 @@
+#lifeline {
+     width: 100%;
+     display: block;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     border: 1px solid gray;
+     border-radius: 3px;
+}
+
+#lifelineTable {
+     width: 100%;
+     display: block;
+}
+
+#lifelineTable th {
+     text-align: right;
+     margin-right: 1em;
+}
+
+.lifeTableRow {
+     display: grid;
+     grid-template-columns: 5em auto;
+     padding-top: 5px;
+     padding-bottom: 5px;
+     padding-right: 5px;
+     padding-left: 5px;
+     border-bottom: 1px solid gray;
+}
+
+.lifeTableRow:nth-child(even) {
+     background-color: #eee;
+}
+
+.lifeTableRow:last-child {
+     background-color: transparent;
+     border-bottom: none;
+}
+
+.lifeTableRow:last-child .ganttCell {
+     font-size: 0.8em;
+}
+
+.lifeTableRow {
+     display: grid;
+     grid-template-columns: 5em auto
+}
+
+.ganttCell {
+     display: grid;
+     /* border-bottom: 1px solid gray; */
+     /* grid-template-columns: repeat(3, 20%); */
+     /* grid-gap: 5px; */
+}
+
+.visibleTime {
+     background-color: transparent;
+     border-radius: 3px;
+	position: relative;
+}
+
+placeholderTime {
+     background-color: white;
+}
+
+/* For the tooltip */
+/* https://leaverou.github.io/bubbly/ */
+.speech-bubble {
+	position: absolute;
+	background: #00aabb;
+     border-radius: .4em;
+     text-align: left;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 10px;
+	padding-right: 10px;
+     width: 150px;
+     font-size: 0.85em;
+	color: white;
+	z-index: 10;
+}
+
+.visibleTime * {
+     pointer-events: none;
+}
+
+.speech-bubble-right {
+     top: -30%;
+     left: calc(100% + 5px); 
+}
+
+.speech-bubble-left {
+     top: -30%;
+     right: calc(100% + 5px);
+}
+
+.speech-bubble-top {
+     left: 0%;
+     top: calc(-100% - 15px);
+} 
+
+.speech-bubble-bottom-left {
+     left: 0%;
+     top: calc(100% + 5px);
+}
+
+.speech-bubble-bottom-right {
+     right: 0%;
+     top: calc(100% + 5px);
+}
+
+/* For the tooltip's trianglular pointer */
+
+.speech-bubble-left:after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 20px;
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	border-left-color: #00aabb;
+	border-right: 0;
+	margin-top: -5px;
+	margin-right: -5px;
+}
+
+.speech-bubble-right:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 20px;
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	border-right-color: #00aabb;
+	border-left: 0;
+	margin-top: -5px;
+	margin-left: -5px;
+}
+
+.speech-bubble-top:after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 20px;
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	border-top-color: #00aabb;
+	border-bottom: 0;
+	margin-left: -5px;
+	margin-bottom: -5px;
+}
+
+.speech-bubble-bottom-left:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 20px;
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	border-bottom-color: #00aabb;
+	border-top: 0;
+	margin-left: -5px;
+	margin-top: -5px;
+}
+
+.speech-bubble-bottom-right:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 80%;
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	border-bottom-color: #00aabb;
+	border-top: 0;
+	margin-left: -5px;
+	margin-top: -5px;
+}
+
+/* For the legends */
+.legendContainer {
+	display: grid;
+	grid-template-columns: 20px auto;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 30px;
+}
+
+.legendSquare {
+	border-radius: 3px;
+}
+
+.legendName {
+	margin-left: 10px;
+}
