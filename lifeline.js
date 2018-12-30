@@ -27,14 +27,14 @@ drawItems = (tableEl, interval) => {
           let axisHeader = document.createElement('th');
           axisHeader.innerText = item.displayName;
 
-          let axisCell = document.createElement('td');
-          axisCell.classList.add('ganttCell');
+          let ganttCell = document.createElement('td');
+          ganttCell.classList.add('ganttCell');
 
           let slices = [];
           let prev = startPeriod;          
 
           item.dates.forEach(date => {
-               console.log(`start: ${date.start}, end: ${date.end}`);
+               //console.log(`start: ${date.start}, end: ${date.end}`);
                let dateStart = new Date(date.start);
                let dateEnd = new Date(date.end);
                let groupInfo = getGroupInfo(date.group);
@@ -53,14 +53,14 @@ drawItems = (tableEl, interval) => {
 
           let cellStyle = 'grid-template-columns: ';
           slices.forEach(slice => {
-               console.log(`slice: visible: ${slice.visible}, ${slice.width}`);
-               drawTime(slice, axisCell);
+               //console.log(`slice: visible: ${slice.visible}, ${slice.width}`);
+               drawTime(slice, ganttCell);
                cellStyle += `${slice.width}fr `
           });
-          axisCell.style = cellStyle;
+          ganttCell.style = cellStyle;
 
           axisRow.appendChild(axisHeader);
-          axisRow.appendChild(axisCell);  
+          axisRow.appendChild(ganttCell);  
           
           tableEl.appendChild(axisRow);
      })
@@ -87,7 +87,7 @@ addSlice = (slices, visible, width, date, groupInfo) => {
 }
 
 // Draws the divs that represent the data
-drawTime = (slice, axisCell) => {
+drawTime = (slice, ganttCell) => {
      let sliceEl = document.createElement('div');
      if (slice.visible) {
           sliceEl.classList.add('visibleTime');          
@@ -104,7 +104,7 @@ drawTime = (slice, axisCell) => {
           sliceEl.classList.add('placeholderTime');
      }
      
-     axisCell.appendChild(sliceEl);
+     ganttCell.appendChild(sliceEl);
 }
 
 onMouseOver = (slice, e) => {
@@ -155,27 +155,83 @@ onMouseLeave = (e) => {
 
 displayAxis = (tableEl, interval) => {
      let axisRow = document.createElement('tr');
+     axisRow.id = 'axisRow';
      axisRow.classList.add('lifeTableRow');
 
      let axisHeader = document.createElement('th');
 
-     let axisCell = document.createElement('td');     
-     axisCell.classList.add('ganttCell');
-
-     let minYear = interval.minDate.getFullYear();
-     let maxYear = interval.maxDate.getFullYear();
-     axisCell.style = `grid-template-columns: repeat(${maxYear-minYear+1}, 1fr)`;
-     
-     for (let i = minYear; i <= maxYear; i++) {
-          let axisItemEl = document.createElement('div');      
-          axisItemEl.innerText = i;
-          axisCell.appendChild(axisItemEl);
-     }
+     let axisCell = document.createElement('td'); 
+     axisCell.id = 'axisCell';
+     axisCell.classList.add('ganttCell');     
 
      axisRow.appendChild(axisHeader);
      axisRow.appendChild(axisCell);     
 
      tableEl.appendChild(axisRow);
+
+     drawAxisLabels(interval, axisCell);
+}
+
+drawAxisLabels = (interval, axisCell) => {
+     let minYear = interval.minDate.getFullYear();
+     let maxYear = interval.maxDate.getFullYear();
+     let numItems = maxYear - minYear + 1;
+
+     // calculate how many will fit
+     let skips = calculateAxisSkips(numItems);
+     let numAxisItems = Math.ceil(numItems/skips);
+
+     axisCell.style = `grid-template-columns: repeat(${numAxisItems}, 1fr)`;
+     
+     for (let i = minYear; i <= maxYear; i = i + skips) {
+          let axisItemEl = document.createElement('div');
+          axisItemEl.classList.add('axisItem');
+          axisItemEl.innerText = i;
+          axisCell.appendChild(axisItemEl);
+     }
+}
+
+// Skip every n items
+// e.g. if return is 2, display only 1st, 3rd, 5th...
+// e.g. if return is 3, display only 1st, 4th, 7th...
+calculateAxisSkips = (inputNum) => {
+     let ret = 1;
+     let rulerEl = document.getElementById('ruler');
+     let axisCellEl = document.getElementById('axisCell');
+     if (!rulerEl || !axisCellEl) {
+          return ret; // do not skip
+     }
+
+     let displayableNum = axisCellEl.clientWidth / rulerEl.offsetWidth;
+     while (displayableNum < inputNum / ret) {
+          ret++;
+     }
+
+     return ret;
+}
+
+redrawAxisLabels = (interval) => {
+     let axisCell = document.getElementById('axisCell');
+     if (axisCell) {
+          // clear all children
+          while(axisCell.firstChild) {
+               axisCell.removeChild(axisCell.firstChild);
+          }
+     }
+
+     drawAxisLabels(interval, axisCell);
+}
+
+canAxisFit = () => {
+     let lifelineEl = document.getElementById('lifeline');
+     let rect1 = lifelineEl.getClientRects()[0];
+
+     let axisEl = document.getElementById('axisRow');     
+     let rect2 = axisEl.getClientRects()[0];
+     //console.log(`lifelineEl: ${rect1.width}, axisEl: ${rect2.width} `);
+     console.log(`lifelineEl: ${rect1.width}, axisEl: ${axisEl.scrollWidth} `);
+
+     return lifelineEl.clientWidth > axisEl.scrollWidth;
 }
 
 getMinDate = (allDates) => {
@@ -238,4 +294,12 @@ displayLegends = (tableEl) => {
           legendEl.appendChild(nameEl);
           tableEl.appendChild(legendEl);
      });
+}
+
+handleResize = () => {
+     // if (!canAxisFit()) {
+     if (1) {
+          let interval = calculateInterval();
+          redrawAxisLabels(interval);
+     }
 }

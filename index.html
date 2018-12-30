@@ -5,9 +5,18 @@
           <script src="./data.js"></script>
           <link rel="stylesheet" type="text/css" href="./lifeline.css" >
      </head>
-     <body onload="loadData()">
-          <!-- TODO: add a combobox to let the user choose how to group, e.g. by company or all skills -->
+     <body onload="loadData()" onresize="handleResize()">
           <div id="lifeline">
+               <div id="lifelineOptions">
+                    Categorize by :
+                    <select>
+                              <Option>None</Option>
+                              <Option>Company</Option>
+                    </select>
+                    <!-- Invisible element used for measuring text length -->
+                    <div id="ruler">2000</div>
+                    <input type="checkbox">Show captions</input>
+               </div>
                <table id="lifelineTable"></table>
           </div>
      </body>

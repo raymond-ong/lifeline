@@ -2,13 +2,13 @@
      width: 100%;
      display: block;
      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-     border: 1px solid gray;
-     border-radius: 3px;
 }
 
 #lifelineTable {
      width: 100%;
-     display: block;
+	display: block;
+     border: 1px solid gray;
+     border-radius: 3px;	
 }
 
 #lifelineTable th {
@@ -35,9 +35,9 @@
      border-bottom: none;
 }
 
-.lifeTableRow:last-child .ganttCell {
+/* .axisCell, #ruler {
      font-size: 0.8em;
-}
+} */
 
 .lifeTableRow {
      display: grid;
@@ -57,8 +57,24 @@
 	position: relative;
 }
 
+.axisItem, #ruler {
+	margin-right: 10px;
+	font-size: 0.9em;
+}
+
 placeholderTime {
      background-color: white;
+}
+
+#lifelineOptions {
+	margin-bottom: 10px;
+}
+
+#ruler {
+	display: inline;
+	border: 1px solid red;
+	padding-right: 10px;
+	visibility: hidden;
 }
 
 /* For the tooltip */
@@ -78,6 +94,7 @@ placeholderTime {
 	z-index: 10;
 }
 
+/* Prevent hover for the bubbles */
 .visibleTime * {
      pointer-events: none;
 }
