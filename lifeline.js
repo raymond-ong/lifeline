@@ -21,13 +21,14 @@ drawItems = (tableEl, interval) => {
 
      lifeLineData.items.forEach(item => {
           console.log(`Item: ${item.name}`);
-          let axisRow = document.createElement('tr');
+          let axisRow = document.createElement('div');
           axisRow.classList.add('lifeTableRow');
 
-          let axisHeader = document.createElement('th');
+          let axisHeader = document.createElement('div');
+          axisHeader.classList.add('lifelineTableHeader');
           axisHeader.innerText = item.displayName;
 
-          let ganttCell = document.createElement('td');
+          let ganttCell = document.createElement('div');
           ganttCell.classList.add('ganttCell');
 
           let slices = [];
@@ -154,13 +155,14 @@ onMouseLeave = (e) => {
 }
 
 displayAxis = (tableEl, interval) => {
-     let axisRow = document.createElement('tr');
+     let axisRow = document.createElement('div');
      axisRow.id = 'axisRow';
      axisRow.classList.add('lifeTableRow');
 
-     let axisHeader = document.createElement('th');
+     let axisHeader = document.createElement('div');
+     axisHeader.classList.add('lifelineTableHeader');
 
-     let axisCell = document.createElement('td'); 
+     let axisCell = document.createElement('div'); 
      axisCell.id = 'axisCell';
      axisCell.classList.add('ganttCell');     
 

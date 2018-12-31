@@ -1,3 +1,7 @@
+body {
+	background-color: floralwhite;
+}
+
 #lifeline {
      width: 100%;
      display: block;
@@ -11,14 +15,15 @@
      border-radius: 3px;	
 }
 
-#lifelineTable th {
+.lifelineTableHeader {	
      text-align: right;
-     margin-right: 1em;
+	margin-right: 1em;
+	font-weight: 500;
 }
 
 .lifeTableRow {
-     display: grid;
-     grid-template-columns: 5em auto;
+	display: grid;
+	grid-template-columns: 150px auto;
      padding-top: 5px;
      padding-bottom: 5px;
      padding-right: 5px;
@@ -39,11 +44,12 @@
      font-size: 0.8em;
 } */
 
+/*
 .lifeTableRow {
      display: grid;
      grid-template-columns: 5em auto
 }
-
+*/
 .ganttCell {
      display: grid;
      /* border-bottom: 1px solid gray; */
