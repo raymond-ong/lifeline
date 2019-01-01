@@ -8,14 +8,18 @@
      <body onload="loadData()" onresize="handleResize()">
           <div id="lifeline">
                <div id="lifelineOptions">
-                    Categorize by :
-                    <select>
-                              <Option>None</Option>
-                              <Option>Company</Option>
-                    </select>
+                    <span>
+                         Categorize by :
+                         <select id="cmbCategorize" onchange="cmbCategorizeChanged()">
+                                   <Option>None</Option>
+                                   <Option>Company</Option>
+                         </select>
+                    </span>
                     <!-- Invisible element used for measuring text length -->
-                    <div id="ruler">2000</div>
-                    <input type="checkbox">Show captions</input>
+                    <span id="ruler">2000</span>
+                    <span class="lifelineOption">
+                         <input type="checkbox" id = "chkCaption" onchange="captionCheckedChanged()">Show captions</input>
+                    </span>
                </div>
                <div id="lifelineTable"></table>
           </div>

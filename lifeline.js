@@ -1,19 +1,158 @@
 loadData = () => {
      let tableEl = document.getElementById('lifelineTable');
-
      // TODO: validate the data by the user
+
      let interval = calculateInterval();
+     clearAllData(tableEl);
 
-     // Draw each item
-     drawItems(tableEl, interval);
+     let cmbCategorizeEl = document.getElementById('cmbCategorize');
+     if (cmbCategorizeEl.value === 'Company') {
+          // Draw each item
+          drawItemsByCategory(tableEl, interval);
 
-     // Draw the date axis
-     displayAxis(tableEl, interval);     
+          // Draw the date axis
+          displayAxis(tableEl, interval);               
+     }
+     else {
+          // Draw each item
+          drawItems(tableEl, interval);
 
-     // Draw the legends
-     displayLegends(tableEl);
+          // Draw the date axis
+          displayAxis(tableEl, interval);     
+
+          // Draw the legends
+          displayLegends(tableEl);
+     }
 }
 
+clearAllData = (tableEl) => {
+     while(tableEl.firstChild) {
+          tableEl.removeChild(tableEl.firstChild);
+     }
+}
+
+// Draw Items by category
+drawItemsByCategory = (tableEl, interval) => {
+     let startPeriod = new Date(`${interval.minDate.getFullYear()}-01-01`);
+     let endPeriod = new Date(`${interval.maxDate.getFullYear()}-12-31`);
+     let totalPeriod = endPeriod.getTime() - startPeriod.getTime();
+
+     lifeLineData.groupings.forEach(group => {
+          let groupAccordion = drawGroupAccordion(group);
+          let accordionItemsConainer = drawAccordionItemsContainer(groupAccordion);
+
+          lifeLineData.items.forEach(item => {
+               let axisRow = document.createElement('div');
+               axisRow.classList.add('lifeTableRow');
+     
+               let axisHeader = document.createElement('div');
+               axisHeader.classList.add('lifelineTableHeader');
+               axisHeader.innerText = item.displayName;
+     
+               let ganttCell = document.createElement('div');
+               ganttCell.classList.add('ganttCell');
+
+               let slices = [];
+               let prev = startPeriod;          
+     
+               item.dates.forEach(date => {
+                    //console.log(`start: ${date.start}, end: ${date.end}`);
+                    if (date.group !== group.name) {
+                         return;
+                    }
+
+                    let dateStart = new Date(date.start);
+                    let dateEnd = new Date(date.end);
+                    let groupInfo = getGroupInfo(date.group);
+     
+                    if (dateStart > prev) {
+                         addSlice(slices, false, (dateStart.getTime() - prev.getTime()) / totalPeriod, null, null);
+                    }
+     
+                    addSlice(slices, true, (dateEnd.getTime() - dateStart.getTime()) / totalPeriod, date, groupInfo);
+                    prev = dateEnd;
+               })
+
+               // if there is not slice under the item, don't add it anymore
+               if (slices.length === 0) {
+                    return;
+               }
+     
+               if (prev < endPeriod) {
+                    addSlice(slices, false, (endPeriod.getTime() - prev.getTime()) / totalPeriod, null, null);
+               }
+
+               let cellStyle = 'grid-template-columns: ';
+               slices.forEach(slice => {
+                    //console.log(`slice: visible: ${slice.visible}, ${slice.width}`);
+                    drawTime(slice, ganttCell);
+                    cellStyle += `${slice.width}fr `
+               });
+               ganttCell.style = cellStyle;
+
+               axisRow.appendChild(axisHeader);
+               axisRow.appendChild(ganttCell);  
+               
+               accordionItemsConainer.appendChild(axisRow);
+          });  // for loop for items
+
+          // TODO: if there is no item under the accordion, do not display it anymore
+          tableEl.appendChild(groupAccordion);
+          accordionItemsConainer.previousElementSibling.click(); // open the accordions by default
+     }); // for loop for groups
+}
+
+drawGroupAccordion = (group) => {
+     let groupEl = document.createElement('div');
+     
+     groupEl.classList.add('groupAccordionContainer');
+     let groupTitleEl = document.createElement('div');
+     groupTitleEl.onclick = onAccordionClicked;
+     groupTitleEl.innerText = group.displayName;
+     groupTitleEl.classList.add('groupAccordion');
+     groupTitleEl.style = `color: ${group.color}; background-color: ${group.backColor}`;
+
+     groupEl.appendChild(groupTitleEl);
+     return groupEl;
+}
+
+drawAccordionItemsContainer = (accordionEl) => {
+     let container = document.createElement('div');
+     container.classList.add('accordionItemsContainer');
+
+     accordionEl.appendChild(container);
+     return container;
+}
+
+onAccordionClicked = (e) => {
+     e.target.classList.toggle('groupAccordion-active');
+     var panel = e.target.nextElementSibling;
+     debugger
+     if (panel.style.maxHeight){
+          panel.style.maxHeight = null;
+     } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+     }
+}
+
+/*
+drawCategoriesAccordion = (tableEl) => {
+     let retList = {};
+     lifeLineData.groupings.forEach(group => {
+          let groupEl = document.createElement('div');
+          groupEl.classList.add('groupAccordion');
+          groupEl.innerText = group.displayName;
+          groupEl.style = `color: ${group.color}; background-color: ${group.backColor}`;
+
+          tableEl.appendChild(groupEl);
+          retList[group.name] = groupEl;
+     });
+
+     return retList;
+}
+*/
+
+// Draw all items
 drawItems = (tableEl, interval) => {
      let startPeriod = new Date(`${interval.minDate.getFullYear()}-01-01`);
      let endPeriod = new Date(`${interval.maxDate.getFullYear()}-12-31`);
@@ -96,9 +235,14 @@ drawTime = (slice, ganttCell) => {
           sliceEl.onmouseleave = onMouseLeave;
           let fontColor = slice.groupInfo.color;
           let backColor = slice.groupInfo.backColor;
-          let caption = slice.date.caption ? slice.date.caption : '';     
-          let style = `position:absolute;color:${fontColor};text-align: center; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 100%; font-size: 0.8em`;          
-          sliceEl.innerHTML = `<div style="${style}">${caption}</div>`;
+          let caption = slice.date.caption ? slice.date.caption : '';               
+          let style = `color:${fontColor};`;
+          let classStr = 'caption';
+          let checkboxEl = document.getElementById('chkCaption');
+          if (!checkboxEl.checked) {
+               classStr += ' caption-invisible';
+          }
+          sliceEl.innerHTML = `<div class="${classStr}" style="${style}">${caption}</div>`;
           sliceEl.style = `background-color: ${backColor}`;
      }
      else {
@@ -158,6 +302,7 @@ displayAxis = (tableEl, interval) => {
      let axisRow = document.createElement('div');
      axisRow.id = 'axisRow';
      axisRow.classList.add('lifeTableRow');
+     axisRow.classList.add('axisRow');
 
      let axisHeader = document.createElement('div');
      axisHeader.classList.add('lifelineTableHeader');
@@ -214,13 +359,7 @@ calculateAxisSkips = (inputNum) => {
 
 redrawAxisLabels = (interval) => {
      let axisCell = document.getElementById('axisCell');
-     if (axisCell) {
-          // clear all children
-          while(axisCell.firstChild) {
-               axisCell.removeChild(axisCell.firstChild);
-          }
-     }
-
+     clearAllData(axisCell);
      drawAxisLabels(interval, axisCell);
 }
 
@@ -299,9 +438,22 @@ displayLegends = (tableEl) => {
 }
 
 handleResize = () => {
-     // if (!canAxisFit()) {
-     if (1) {
-          let interval = calculateInterval();
-          redrawAxisLabels(interval);
-     }
+     let interval = calculateInterval();
+     redrawAxisLabels(interval);
+}
+
+captionCheckedChanged = () => {
+     let checkboxEl = document.getElementById('chkCaption');
+     let captionEls = document.getElementsByClassName('caption');
+
+     for (let i = 0; i < captionEls.length; i++) {
+          let captionEl = captionEls[i];
+          captionEl.classList.toggle('caption-invisible');
+     };
+     
+}
+
+cmbCategorizeChanged = () => {
+     loadData();
+     
 }
