@@ -264,7 +264,7 @@ placeholderTime {
 	cursor: pointer;
 }
 
-.groupAccordion:after {
+.groupAccordion:before {
 	content: '\002B';
 	
 	font-weight: bold;
@@ -272,7 +272,7 @@ placeholderTime {
 	margin-right: 10px;
 }
 
-.groupAccordion-active:after {	
+.groupAccordion-active:before {	
 	content: "\2212";	
 }
 
