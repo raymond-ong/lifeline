@@ -41,7 +41,7 @@
 .lifeTableRow.axisRow {
 	background-color: #456;
 	color: white;
-     border-bottom: none;
+	border-bottom: 1px solid #456;
 }
 
 /* .axisCell, #ruler {
