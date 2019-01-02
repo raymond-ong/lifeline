@@ -127,30 +127,12 @@ drawAccordionItemsContainer = (accordionEl) => {
 onAccordionClicked = (e) => {
      e.target.classList.toggle('groupAccordion-active');
      var panel = e.target.nextElementSibling;
-     debugger
      if (panel.style.maxHeight){
           panel.style.maxHeight = null;
      } else {
           panel.style.maxHeight = panel.scrollHeight + "px";
      }
 }
-
-/*
-drawCategoriesAccordion = (tableEl) => {
-     let retList = {};
-     lifeLineData.groupings.forEach(group => {
-          let groupEl = document.createElement('div');
-          groupEl.classList.add('groupAccordion');
-          groupEl.innerText = group.displayName;
-          groupEl.style = `color: ${group.color}; background-color: ${group.backColor}`;
-
-          tableEl.appendChild(groupEl);
-          retList[group.name] = groupEl;
-     });
-
-     return retList;
-}
-*/
 
 // Draw all items
 drawItems = (tableEl, interval) => {
@@ -252,9 +234,7 @@ drawTime = (slice, ganttCell) => {
      ganttCell.appendChild(sliceEl);
 }
 
-onMouseOver = (slice, e) => {
-     //debugger
-     // draw the tooltip now -- testing
+onMouseOver_orig = (slice, e) => {
      let tip = document.createElement('span');
      tip.classList.add('speech-bubble');
      tip.id = 'tipLifeLine'; // there is only 1 instance at a time because we will remove it on MouseLeave
@@ -278,6 +258,36 @@ onMouseOver = (slice, e) => {
      e.target.appendChild(tip);
 }
 
+onMouseOver = (slice, e) => {
+     let tip = document.getElementById('lifelineTip');
+     let caption = slice.date.caption ? `${slice.date.caption}<hr>` : '';
+     let width = caption !== '' ? 150 : 100;
+
+     let rect = e.target.getClientRects()[0];
+     let topVal = 0;
+     let leftVal = 0;
+     
+     // If it's very short, choose left or right; otherwise select bottom
+     if (slice.width > 0.15) { // quite long; show at bottom
+          topVal = rect.bottom + 5;
+          leftVal = rect.left;
+          tip.className = 'speech-bubble-bottom-left';
+     }
+     else if (slice.cumulativeWidth < 0.5) { // show tip on the right since it is in the left portion
+          topVal = rect.top - 10;
+          leftVal = rect.right + 5; // add 5 for the bubble pointer
+          tip.className = 'speech-bubble-right';
+     }
+     else {
+          topVal = rect.top - 10;
+          leftVal = rect.left - width - 5 - 20; // add 20 for the bubble padding
+          tip.className = 'speech-bubble-left';
+     }
+
+     tip.innerHTML = caption + `Start: ${formatDate(slice.date.start)}<br/>End: &nbsp;${formatDate(slice.date.end)}`;     
+     tip.style = `width: ${width}px; top: ${topVal}px; left: ${leftVal}px`;
+}
+
 const dateMMM = {
      0: 'Jan',     1: 'Feb',     2: 'Mar',     3: 'Apr',     4: 'May',     5: 'Jun',
      6: 'Jul',     7: 'Aug',     8: 'Sept',     9: 'Oct',     10: 'Nov',     11: 'Dec'
@@ -292,10 +302,8 @@ formatDate = (dateStr) => {
 }
 
 onMouseLeave = (e) => {
-     let tipEl = document.getElementById('tipLifeLine');
-     if (tipEl) {
-          e.target.removeChild(tipEl);
-     }
+     let tip = document.getElementById('lifelineTip');
+     tip.className = 'speech-bubble-hide';
 }
 
 displayAxis = (tableEl, interval) => {

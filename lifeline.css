@@ -105,9 +105,9 @@ placeholderTime {
 
 /* For the tooltip */
 /* https://leaverou.github.io/bubbly/ */
-.speech-bubble {
-	position: absolute;
-	background: #00aabb;
+#lifelineTip {
+	position: fixed; /* let javascript compute the position, instead of CSS because of overlap issue with the accordion (overflow:hidden) that cant be resolved by z-index */
+	background: #456;
      border-radius: .4em;
      text-align: left;
 	padding-top: 4px;
@@ -117,7 +117,7 @@ placeholderTime {
      width: 150px;
      font-size: 0.85em;
 	color: white;
-	z-index: 10;
+	box-shadow: 2px 2px 2px grey;
 }
 
 /* Prevent hover for the bubbles */
@@ -126,28 +126,27 @@ placeholderTime {
 }
 
 .speech-bubble-right {
-     top: -30%;
-     left: calc(100% + 5px); 
+	display: block;
 }
 
 .speech-bubble-left {
-     top: -30%;
-     right: calc(100% + 5px);
+	display: block;
 }
 
 .speech-bubble-top {
-     left: 0%;
-     top: calc(-100% - 15px);
+	display: block;
 } 
 
 .speech-bubble-bottom-left {
-     left: 0%;
-     top: calc(100% + 5px);
+	display: block;
 }
 
 .speech-bubble-bottom-right {
-     right: 0%;
-     top: calc(100% + 5px);
+	display: block;
+}
+
+.speech-bubble-hide {
+	display: none;
 }
 
 /* For the tooltip's trianglular pointer */
@@ -160,7 +159,7 @@ placeholderTime {
 	width: 0;
 	height: 0;
 	border: 5px solid transparent;
-	border-left-color: #00aabb;
+	border-left-color: #456;
 	border-right: 0;
 	margin-top: -5px;
 	margin-right: -5px;
@@ -174,7 +173,7 @@ placeholderTime {
 	width: 0;
 	height: 0;
 	border: 5px solid transparent;
-	border-right-color: #00aabb;
+	border-right-color: #456;
 	border-left: 0;
 	margin-top: -5px;
 	margin-left: -5px;
@@ -188,7 +187,7 @@ placeholderTime {
 	width: 0;
 	height: 0;
 	border: 5px solid transparent;
-	border-top-color: #00aabb;
+	border-top-color: #456;
 	border-bottom: 0;
 	margin-left: -5px;
 	margin-bottom: -5px;
@@ -202,7 +201,7 @@ placeholderTime {
 	width: 0;
 	height: 0;
 	border: 5px solid transparent;
-	border-bottom-color: #00aabb;
+	border-bottom-color: #456;
 	border-top: 0;
 	margin-left: -5px;
 	margin-top: -5px;
@@ -216,7 +215,7 @@ placeholderTime {
 	width: 0;
 	height: 0;
 	border: 5px solid transparent;
-	border-bottom-color: #00aabb;
+	border-bottom-color: #456;
 	border-top: 0;
 	margin-left: -5px;
 	margin-top: -5px;
