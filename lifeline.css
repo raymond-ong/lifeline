@@ -120,37 +120,12 @@ placeholderTime {
 	box-shadow: 2px 2px 2px grey;
 }
 
-/* Prevent hover for the bubbles */
-.visibleTime * {
-     pointer-events: none;
-}
-
-.speech-bubble-right {
-	display: block;
-}
-
-.speech-bubble-left {
-	display: block;
-}
-
-.speech-bubble-top {
-	display: block;
-} 
-
-.speech-bubble-bottom-left {
-	display: block;
-}
-
-.speech-bubble-bottom-right {
-	display: block;
-}
-
 .speech-bubble-hide {
-	display: none;
+	visibility: hidden;
+	opacity: 0;
 }
 
 /* For the tooltip's trianglular pointer */
-
 .speech-bubble-left:after {
 	content: '';
 	position: absolute;
@@ -179,20 +154,6 @@ placeholderTime {
 	margin-left: -5px;
 }
 
-.speech-bubble-top:after {
-	content: '';
-	position: absolute;
-	bottom: 0;
-	left: 20px;
-	width: 0;
-	height: 0;
-	border: 5px solid transparent;
-	border-top-color: #456;
-	border-bottom: 0;
-	margin-left: -5px;
-	margin-bottom: -5px;
-}
-
 .speech-bubble-bottom-left:after {
 	content: '';
 	position: absolute;
@@ -207,19 +168,6 @@ placeholderTime {
 	margin-top: -5px;
 }
 
-.speech-bubble-bottom-right:after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 80%;
-	width: 0;
-	height: 0;
-	border: 5px solid transparent;
-	border-bottom-color: #456;
-	border-top: 0;
-	margin-left: -5px;
-	margin-top: -5px;
-}
 
 /* For the legends */
 .legendContainer {
