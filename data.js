@@ -84,9 +84,16 @@ lifeLineData = {
                          caption: 'WPF'
                     },
                     {
-                         // OM
+                         // OM, ISAE 1.08
                          start: "2018-04-01",
-                         end: "2018-12-31",
+                         end: "2019-06-30",
+                         group: "yokogawa",
+                         caption: ''
+                    },
+                    {
+                         // ISAE POC, 1.08.10
+                         start: "2020-02-01",
+                         end: "2020-09-30",
                          group: "yokogawa",
                          caption: ''
                     }
@@ -144,7 +151,7 @@ lifeLineData = {
                     },
                     {
                          start: "2013-11-01",
-                         end: "2018-12-31",
+                         end: "2019-03-31",
                          group: "yokogawa",
                          caption: ''
                     }
@@ -171,9 +178,44 @@ lifeLineData = {
                dates: [
                     {
                          start: "2017-04-01",
-                         end: "2018-12-31",
+                         end: "2019-01-31",
                          group: "yokogawa",
                          caption: 'Javascript ES5'
+                    },
+               ]
+          },
+          {
+               // ISAE 1.08, 1.08.10
+               name: "Installshield",
+               displayName: "InstallShield",
+               tooltip: "InstallShield",
+               dates: [
+                    {
+                         // R1.08
+                         start: "2019-04-01",
+                         end: "2019-09-30",
+                         group: "yokogawa",
+                         caption: ''
+                    },
+                    {
+                         // R1.08.10
+                         start: "2020-04-01",
+                         end: "2020-09-30",
+                         group: "yokogawa",
+                         caption: ''
+                    },
+               ]
+          },
+          {
+               name: "React JS",
+               displayName: "React JS",
+               tooltip: "react JS",
+               dates: [
+                    {
+                         start: "2019-10-01",
+                         end: "2020-03-31",
+                         group: "yokogawa",
+                         caption: ''
                     },
                ]
           },
