@@ -88,13 +88,27 @@ lifeLineData = {
                          start: "2018-04-01",
                          end: "2019-06-30",
                          group: "yokogawa",
-                         caption: ''
+                         caption: 'REST API'
                     },
                     {
                          // ISAE POC, 1.08.10
                          start: "2020-02-01",
                          end: "2020-09-30",
                          group: "yokogawa",
+                         caption: ''
+                    },
+                    {
+                         // ISAE Demo+1.08.20
+                         start: "2021-01-01",
+                         end: "2021-06-25",
+                         group: "yokogawa",
+                         caption: ''
+                    },
+                    {
+                         // Teradyne
+                         start: "2021-06-28",
+                         end: "2021-09-03",
+                         group: "teradyne",
                          caption: ''
                     }
                ]
@@ -204,6 +218,13 @@ lifeLineData = {
                          group: "yokogawa",
                          caption: ''
                     },
+                    {
+                         // R1.08.20
+                         start: "2021-05-01",
+                         end: "2021-06-25",
+                         group: "yokogawa",
+                         caption: ''
+                    },
                ]
           },
           {
@@ -232,7 +253,7 @@ lifeLineData = {
                name: 'kolipri',
                displayName: 'Kolipri Communications',
                color:'white',
-               backColor: 'blue',
+               backColor: 'green',
                address: 'Alabang, Philippines'
           },
           {
@@ -241,8 +262,14 @@ lifeLineData = {
                color:'black',
                backColor: 'gold',
                address: 'Bedok, Singapore'
-          }
-
+          },
+          {
+               name: 'teradyne',
+               displayName: 'Teradyne Inc.',
+               color:'white',
+               backColor: 'blue',
+               address: 'Science Park, Singapore'
+          },
 
      ]
 }
